@@ -15,8 +15,7 @@ Production-ready, security-first backend starter for an AWS + Cloudflare edge ar
 - Semantic-release, Conventional Commits, commitlint, pre-commit hooks
 
 ## Architecture
-![Architecture](./docs/images/architecture.png)
-
+![Architecture](./docs/images/Backend%20System%20Architecture%20Overview.png)
 ## Quickstart
 
 ```bash
