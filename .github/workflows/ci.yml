@@ -1,0 +1,29 @@
+name: CI
+on:
+  push:
+  pull_request:
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: corepack enable
+      - run: pnpm install --frozen-lockfile || npm ci
+      - run: pnpm run lint
+      - run: pnpm run typecheck
+      - run: pnpm test -- --coverage
+      - name: Build Docker image
+        run: docker build -t app:ci .
+      - name: SBOM
+        uses: anchore/sbom-action@v0
+        with:
+          output-file: sbom.spdx.json
+      - name: Trivy Scan
+        uses: aquasecurity/trivy-action@0.24.0
+        with:
+          image-ref: app:ci
+          format: table
+          exit-code: '0'
